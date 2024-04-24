@@ -1,0 +1,5 @@
+Static init blok
+// super
+// nema clanova 
+Non-static init blok 1
+Non-static init blok 1

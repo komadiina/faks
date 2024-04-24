@@ -1,0 +1,32 @@
+ClassA staticki inicijalizacioni blok       // ucitana klasa u memoriju
+ClassA staticki inicijalizacioni blok 2  
+ClassB staticki inicijalizacioni blok       // ucitana klasa u memoriju
+ClassB nestaticki inicijalizacioni blok     // prvi korak instanciranja klase B (clan klase A)
+ClassB konstruktor                          // tijelo konstruktora klase B
+ClassA nestaticki inicijalizacioni blok 1   // nestaticki blokovi, gotova konstrukcija atributa
+ClassA nestaticki inicijalizacioni blok 2
+nakon super                                 // tijelo konstruktora klase A
+ClassB metoda ...
+ClassA konstruktor
+
+// ovdje je finalizovano
+ClassA finalize // prvo je uklonjena referenca na obj tipa A
+ClassB finalize // nema ref A -> nema ref A classBInstance -> ClassB finalize
+
+// nakon unosa 
+// unos...
+main
+
+--------------------------------- UKLONJENI DONJI KOMENTARI
+
+.. nastavak
+ClassB nestaticki inicijalizacioni blok
+ClassB konstruktor
+ClassA nestaticki inicijalizacioni blok 1
+ClassA nestaticki inicijalizacioni blok 2
+nakon super
+ClassB metoda
+ClassA konstruktor
+ClassB nestaticki inicijalizacioni blok
+ClassB konstruktor
+// finalize? --> NE POZIVA SE PRI IZLAZU IZ MAIN METODE

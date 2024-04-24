@@ -1,0 +1,4 @@
+abc
+!! ex: ClassCastException
+// downcastujemo Object -> Integer (OK)
+// ALI NIJE OK: Object boxuje String, Integer nema hijerarhijske korelacije sa Stringom

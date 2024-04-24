@@ -1,0 +1,4 @@
+Marko;Marković;ETF;9.56
+Pero;Perić;MF;9.46
+Slavica;Slavičić;EF;9.25
+Slavko;Slavičić;EF;9.25

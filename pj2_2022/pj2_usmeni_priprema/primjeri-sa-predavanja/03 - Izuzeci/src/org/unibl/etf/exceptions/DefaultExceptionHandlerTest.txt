@@ -1,0 +1,3 @@
+// propagira ArithmeticException
+// iz divide() u main()
+// nema nikakav hendling -> izlaz iz main-a

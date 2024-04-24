@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/01 - Uvod/01 - Uvod.iml" filepath="$PROJECT_DIR$/01 - Uvod/01 - Uvod.iml" />
+      <module fileurl="file://$PROJECT_DIR$/02 - Paketi, kontrola pristupa/02 - Paketi, kontrola pristupa.iml" filepath="$PROJECT_DIR$/02 - Paketi, kontrola pristupa/02 - Paketi, kontrola pristupa.iml" />
+      <module fileurl="file://$PROJECT_DIR$/03 - Izuzeci/03 - Izuzeci.iml" filepath="$PROJECT_DIR$/03 - Izuzeci/03 - Izuzeci.iml" />
+      <module fileurl="file://$PROJECT_DIR$/04 - OOP u Javi/04 - OOP u Javi.iml" filepath="$PROJECT_DIR$/04 - OOP u Javi/04 - OOP u Javi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/05 - Osnovne Java klase/05 - Osnovne Java klase.iml" filepath="$PROJECT_DIR$/05 - Osnovne Java klase/05 - Osnovne Java klase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/06 - IO/06 - IO.iml" filepath="$PROJECT_DIR$/06 - IO/06 - IO.iml" />
+      <module fileurl="file://$PROJECT_DIR$/07 - Genericki mehanizmi/07 - Genericki mehanizmi.iml" filepath="$PROJECT_DIR$/07 - Genericki mehanizmi/07 - Genericki mehanizmi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/08 - Kolekcije/08 - Kolekcije.iml" filepath="$PROJECT_DIR$/08 - Kolekcije/08 - Kolekcije.iml" />
+      <module fileurl="file://$PROJECT_DIR$/09 - Konkurentno programiranje/09 - Konkurentno programiranje.iml" filepath="$PROJECT_DIR$/09 - Konkurentno programiranje/09 - Konkurentno programiranje.iml" />
+      <module fileurl="file://$PROJECT_DIR$/10 - Lambda/10 - Lambda.iml" filepath="$PROJECT_DIR$/10 - Lambda/10 - Lambda.iml" />
+      <module fileurl="file://$PROJECT_DIR$/11 - Streamovi/11 - Streamovi.iml" filepath="$PROJECT_DIR$/11 - Streamovi/11 - Streamovi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/02 - Moduli/moduli/org.unibl.etf.clientapp/org.unibl.etf.clientapp.iml" filepath="$PROJECT_DIR$/02 - Moduli/moduli/org.unibl.etf.clientapp/org.unibl.etf.clientapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/02 - Moduli/moduli/org.unibl.etf.myapp/org.unibl.etf.myapp.iml" filepath="$PROJECT_DIR$/02 - Moduli/moduli/org.unibl.etf.myapp/org.unibl.etf.myapp.iml" />
+    </modules>
+  </component>
+</project>

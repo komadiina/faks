@@ -1,0 +1,4 @@
++ sifra string
++ datumKupovine string
++ stavke List<NarudzbenicaStavka>
++ fromString(str string) Narudzbenica

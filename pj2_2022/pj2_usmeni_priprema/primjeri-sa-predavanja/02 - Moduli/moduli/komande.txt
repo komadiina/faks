@@ -1,0 +1,7 @@
+javac -d org.unibl.etf.myapp org.unibl.etf.myapp/module-info.java org.unibl.etf.myapp/org/unibl/etf/myapp/HelloWorld.java org.unibl.etf.myapp/org/unibl/etf/myapp/extended/HelloWorldExtended.java
+
+
+javac --module-path . -d org.unibl.etf.clientapp org.unibl.etf.clientapp/module-info.java org.unibl.etf.clientapp/org/unibl/etf/clientapp/HelloWorldClient.java
+
+
+java --module-path . -m org.unibl.etf.clientapp/org.unibl.etf.clientapp.HelloWorldClient

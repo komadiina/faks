@@ -1,0 +1,7 @@
+try from method...
+finally from method
+3
+try from main
+exception from main: arithmetic..
+finally from main
+end of main

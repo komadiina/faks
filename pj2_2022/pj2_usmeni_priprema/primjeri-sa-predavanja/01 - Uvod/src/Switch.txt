@@ -1,0 +1,12 @@
+a
+c
+2
+
+// ako komentarisemo break u switch case-u (tj. ako ga nema)
+// 'switch tijelo' se izvrsava OD PRVOG UDARENOG POKLAPANJA, do PRVOG BREAK-A
+// ako nije zadovoljen nijedan uslov: default logicno
+// znaci za isti kod, iskomentarisan
+a
+c
+2
+3

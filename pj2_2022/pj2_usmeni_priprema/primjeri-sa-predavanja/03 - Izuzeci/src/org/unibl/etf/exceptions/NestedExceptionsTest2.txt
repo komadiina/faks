@@ -1,0 +1,5 @@
+---- SA KOMENTAROM (bez except)
+test
+finally in outer try
+finally in nested try 2
+// arithmetic exception in main

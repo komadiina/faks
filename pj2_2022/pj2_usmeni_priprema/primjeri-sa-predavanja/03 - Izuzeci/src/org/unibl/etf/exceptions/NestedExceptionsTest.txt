@@ -1,0 +1,5 @@
+finally in nested try 
+// nema catch, propagira se vanka
+catch in outer
+-> stackTrace...
+finally in outer try

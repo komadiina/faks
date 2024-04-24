@@ -1,0 +1,336 @@
+- int[][] x = new int[C][]; -- ne treba navoditi drugi argument, ne baca compile-time gresku
+	- ali pristupanje x[i][j] baca nullpointerexception
+- null pointer access u main metodi ne mora biti prijavljen
+	Car audi = null;
+	audi.start(); // Ne baca compile-time, nego run-time
+
+- System.gc() -> system GarbageCollect
+	- ne garantuje uklanjanje dostupnosti referencama
+	- finalize() metode objekata se pozivaju pri garbage-collectovanju
+
+- inicijalizacioni blokovi se izvrsavaju redom navodjenja
+- staticki inicijalizacioni blokovi se izvrsavaju samo jednom, pri ucitavanju klase u memoriju (i.e. prije nego sto se stvore objekti te klase)
+- REDOSLIJED IZVRSAVANJA statickog inic. bloka zavisi od njihove hronoloske vrijednosti, A NE OD REDOSLIJEDA DEKLARACIJA
+	ClassB { static { "b" } } ... ClassA { static { "a" } }
+	main { new ClassA() ... new ClassB() ... } -> "a" "b"
+
+- redoslijed inicijalizacije i instanciranja klasa:
+	1. staticki inicijalizacioni blokovi svih klasa u hijerarhiji, pocevsi od najvise
+	2. clanovi nadklase	
+	3. nestaticki inicijalizacioni blok nadklase
+	4. konstruktor nadklase
+	5. clanovi, nestaticki inic i konstruktor klase
+
+- shortcircuiting uslova:
+	- izvrsavanje uslova se zaustavlja CIM SE NAIDJE NA [FALSE] EVALUACIJU: 	(T1 && T2 && F3 && T4) === T1 && T2 && F3
+	- kod striktno-ili, cim se naidje na [TRUE]: 
+		(T1 || F2 || T3 || F4) === T1
+
+-- metoda moze imati isto ime kao i sama klasa --> ne zajebati se
+
+-- ako u try {...} bloku ima return:
+	- RETURN SE NE VRACA ODMA AKO ima finally {...} blok
+		- try 'stane kod return', izvrsi se finally, pa opet kod return se nastavi izvrsavanje	
+	- RETURN SE VRACA ODMA AKO nema finally, i ako nije bacen exception
+	- BILO STA poslije return u try je UNREACHABLE
+
+- ako u finally {...} bloku ima return:
+	- TAJ RETURN SE UVIJEK IZVRSAVA
+	- return koji je 'stao u try bloku' se nece izvrsiti, jer: finally blok se [uvijek] izvrsava
+
+- catch blok ocitava prvi baceni exception
+- IllegalStateException: pozivanje metode nad neinicijalizovanim objektima, popunjen stek, pokusaj promjene stanja immutable varijable itd
+
+
+
+---
+Kada je u ovom primjeru metodi method(null) proslijeđena null vrijednost, Java pokušava odabrati najbolje odgovarajuću metodu na temelju dostupnih opcija. U ovom slučaju, metode method(Object obj) i method(Integer obj) su kandidati za poziv.
+
+Preferira se metoda koja najbolje odgovara tipu argumenta, a Integer je specifičniji tip od Object. Stoga će Java odabrati metodu method(Integer obj) jer je Integer podklasa Object klase. Iako null vrijednost može biti pridružena bilo kojem referentnom tipu, Java koristi statičko povezivanje (static binding) tijekom izvođenja i pokušava odabrati najbolju metodu na temelju dostupnih opcija u trenutku kompilacije.
+
+Razlog tome je da Integer također nasljeđuje klasu Number. Klasa Number je nadklasa za sve numeričke tipove u Javi, uključujući Integer, Double, Float, itd. Budući da null može biti pridružen bilo kojem referentnom tipu, uključujući i podklase Number, Java će pridružiti null tipu Number i pozvati metodu method(Number obj).
+---
+
+https://stackoverflow.com/questions/19017258/static-vs-dynamic-binding-in-java
+
+Static binding uses Type (class in Java) information for binding while dynamic binding uses object to resolve binding.
+
+staticko bindovanje: dvije metode u istoj klasi primaju razlicite argumente, poziva se metoda koja odgovara proslijedjenom tipu parametra, pogledati primjer nmp (compile-time)
+dinamicko bindovanje: polimorfizam (run-time)
+
+---
+The Java Programming Language allows the following to be used in interfaces:
+
+Constant variables
+Abstract methods
+Default methods
+Static methods
+Private methods
+Private Static methods
+---
+ako:
+	- klasa A ima: { method1(), method2(), method3() }
+	- interfejsi 	I1 { method1(), method2() };
+			I2 { method1(), method3() };
+	- B extends A: { override method2, override method3 }
+	b.method1 ==> metoda1 iz A
+	b.method2 ==> metoda2 iz B
+	b.method3 ==> metoda3 iz B
+	- ZATO STO KLASA A VEC PRUZA IMPLEMENTACIJU METODE1, TAKO DA INTERFEJS 'PRETPOSTAVLJA' DA JE METODA VEC IMPLEMENTIRANA U KLASI KOJI GA IMPLEMENTIRA
+	- slicno vazi i za suzavanje interfejsa: 
+	npr I1 i = new B(); --> i koristi implementacije svojih metoda pruzene u klasi B
+
+
+- ako interfejs pruza staticku metodu stMethod(), a klasa X implementira taj interfejs, ona ne implementira staticku metodu
+- sto znaci da se ne moze nad klasom X pozvati stMethod(), vec mora indirektno preko interfejsa: I1.stMethod()
+
+----
+
+- provjera instanceof dva hijerarhijski nevezana tipa (npr. Integer instanceof String) je COMPILE-TIME GRESKA
+
+---
+
+za enume:
+	- za svaki enum se poziva konstruktor, redoslijedom navodjenja
+	- == i .equals() kod enuma:
+		- posto su enumi samo singleton objekti u memoriji, poredjenje po referenci (==) je takodje validno, jer svi enumi pokazuju na isti objekat u memoriji
+		- COMPILE-TIME ERROR se moze izazvati ukoliko pozivamo nesto u fazonu myEnum.MY_CONSTANT == "Some String"
+
+Because there is only one instance of each enum constant, it is permissible to use the == operator in place of the equals method when comparing two object references if it is known that at least one of them refers to an enum constant.
+
+pon uto sri ... ned:
+pon.compareTo(ned) -> -6 <==> enumi imaju redoslijednu semantiku koja se implicitno definise pri njihovom (redoslijedu) deklarisanja
+
+- BITNO: enumske konstante se nece instancirati (jvm nece instancirati) sve do prve upotrebe enuma:
+	- npr DayOfTheWeek nece biti instanciran sve dok ne pozovemo DayOfTheWeek.FRIDAY ili nesto slicno
+	- kad pozovemo, pozivaju se konstruktori svih tih deklarisanih enumskih konstanti --> intuitivno 
+
+naslijedjene metode:
+.ordinal(), .getDeclaringClass(), .name()
+
+---
+
+- STATICKE metode se ne mogu redefinisati
+- pokusaj redefinisanja staticke metode (isti signature metode) dovodi do SAKRIVANJA STATICKE METODE putem potklase
+- ukoliko se polimorfno instancira objekat (npr Base A = new Extended()), tada poziv A.stMethod() (iako ne bi trebalo tako pozivati staticku metodu, preko instance, uopste, ali) poziva staticku metodu is natklase
+
+---
+
+clone() je protected u Object, sto znaci da ju korisnik ne moze direktno pozvati UKOLIKO SE NE REDEFINISE KAO PUBLIC (ako nije u istom paketu)
+- shallow i deep cloning
+- deep cloning objekta: svaki kompozicioni objekat mora implementirati cloneable interfejs, ukoliko nije primitivan (primitivni tipovi su trivijalno klonabilni)
+
+---
+x == y -> po referenci
+x.equals(y) -> po vrijednostima polja (ukoliko nije redefinisana naslijedjena metoda)
+
+- !!! u kolekcijama, kol.contains(x) poredi PO VRIJEDNOSTI, tacnije po Objects.equals(elem, x)
+
+---
+
+- serijalizacija: sva polja osim transient i static
+- pri ucitavanju:
+	1. kreira se objekat
+	2. ucitavaju se polja putem odredjenim metoda
+	3. vraca se rezultujuci objekat
+* Externalizable: readExternal, writeExternal
+	- rucna implementacija svega
+* Serializable: readObject, writeObject
+	- JVM putem refleksije obavlja sve sto je potrebno (samo radi)
+
+- kod deserijalizacije bitno je naglasiti: sva transient polja (koja se ne serijalizuju), ucitavaju se sa podrazumijevanom:
+	- null vrijednoscu ako je objekat
+	- 0 (ili false) ako je primitivni tip
+
+- pokusaj deserijalizacije pogresnog tipa (npr User1 iz User, ...) moze dovesti do:
+	-> EOFException
+	-> ClassCastException
+
+--> 	public class ClassCastException
+	extends RuntimeException
+Thrown to indicate that the code has attempted to cast an object to a subclass of which it is not an instance.
+- ukoliko nije rijec o polimorfnim objektima tada se desava compiler error (type mismatch)
+
+----
+
+static double i = 1; // RADI ??
+poziv delegirajuceg konstruktora: A() { this(2); } // NE: A() { A(2); } --> A(2) SE POSMATRA KAO METODA KOJA JE ISTOIMENA KLASI
+u imenima moze: $while, abc_1, final_x_$, abc1,
+	- ne moze: 1abc, final, !@!#!@#, f!
+static int x; // x = 0, defaultna vrijednost primitivnog tipa
+static boolean b; // b = false == 0
+covjek koristi goto labele jebo majku svoju u po picke
+deklaracija goto labela:
+	labela: {
+		...
+		}
+	goto labela je: continue labela; - nastavlja se izvrsavanje
+	break labela - ide se na kraj labele
+ako je main praznog tijela: izvrsavaju se samo staticki inic. blokovi, ne poziva se konstruktor bilo kakav (main je staticka metoda)
+ako je ime fajla A.java, tada klasa A mora imati 
+	- public static void main(String[] args) da bi se program uopste mogao pokrenuti (kompajlirace, ali nece se moci pokrenuti)
+"anonimni" interfejs (klasa) ne smije smanjiti vidljivost prethodno implementirane metode interfejsa
+
+
+
+    public static void main(String[] args) {
+        new TA() {
+            public void m1() {
+                System.out.println("1");
+            }
+        }.m2(); <-- moze se pozvati ovako
+    }
+
+objekat klase Map nema duplikat kljuceve [!]
+svaki novi poziv put(kljuc, vrijednost):
+	- ubacuje novu {k,v} ako ne postoji, ili
+	- na postojeci K postavlja vrijednost V
+
+ne mozemo kastovati Double <-> Integer <-> bilo sta drugo istog nivoa
+	-> runtime error: ClassCastException
+
+- ako imamo neko CE nasljedjuje RuntimException, tada ako bacimo RuntimeException, catch (CE ex) NECE uhvatiti !!
+
+- instanceof nad nekim od operanada koji je null vraca false U V I J E K
+
+- main moze primati i String varargs/ellipsis umjesto String[]
+
+- error je throwable
+
+- ako klasa implementira SERIALIZABLE, tada se pozivom oos.writeObject(objekatA) poziva se writeObject() metoda (ne/redefinisana) iz interfejsa SERIALIZABLE
+- u suprotnom, ako klasa implementira EXTERNALIZABLE, tada u istom takvom slucaju se poziva writeExternal() i readExternal() metoda te klase
+- prilikom read-ovanje konstruise se novi objekat tog tipa, podrazumijevanim konstruktorom
+- POZIVA SE PRVI BEZ-PARAMETARSKI KONSTRUKTOR U KLASNOJ HIJERARHIJI
+"Have access to the no-arg constructor of its first nonserializable superclass"
+"During deserialization the accessible default constructor is called for the first class in the inheritance hierarchy that does not implement Serializable."
+
+
+- default kod interfejsa: mora biti defaultna implementacija tijela interfejsa
+- metode u interfejsu su podrazumijevano PUBLIC, ako klasa pokusa implementirati metodu sa 'friendly/paketskom' vidljivoscu, compile error
+
+- lambda izraz nema reference na lokalne varijable:
+The root cause is that JVM lacks mechanisms of constructing references to local variables, which is what is needed to perform idx++ when idx is an int or some immutable type (e.g. String). Since you try to mutate idx, simply capturing its value would not be sufficient; Java would need to capture a reference, and then modify the value through it.
+
+Java does not have this problem when you use an array, because arrays are reference objects. Java can capture array reference that never changes, and use that non-changing reference to mutate the object. Array itself provides the necessary level of indirection, because Java arrays are mutable.
+
+
+- JAVA STRING CACHE POOL
+- kreira jedinstvene string objekte ako se oni 'cesto' koriste
+- npr:
+	Object obj = new String("a");
+	String str = "a";
+	obj.equals(str); => true
+	obj == "a"; => false
+	str == "a"; => true
+
+- ako imamo hijerarhiju B1 -> B2 -> B3 (b3 je najizvedenija) i metodu metoda():
+	- ako B2 nema tijelo metode metoda() (apstraktna), te instanciramo tipa 
+		B2 b2 = b3 (b3 je tip B3)
+	- tada poziv b2.metoda() delegira poziv na prvu izvedenu implementaciju sa tijelom	(u ovom slucaju od b3)
+
+- podklasa ne moze preklopiti naslijedjenu metodu tako sto dodaje dodatne 'throws' klauzule - compile error
+
+- slicno kao sto cpp ima 'auto', java ima 'var'
+
+- (klase, svi threadovi) ako je natklasa u konstrutkoru podesena kao demonska nit, tada je i potklasa demonska nit. slicno vazi i za:
+	- demonske niti kreiraju demonske niti
+	- korisnicke niti kreiraju demonske niti
+
+
+TIP	| VELICINA (u bajtovima)
+byte	| 1
+char 	| 2
+short	| 2
+int	| 4
+float	| 4
+double	| 8
+long 	| 8
+-------------------
+boolean | 1 bit
+
+float[] f = new float[15_000_000] => 15 000 000 * 4 = 60 MB
+
+- String x = "AAA" -> "AAA" se ubacuje u string constant/cache pool, svaka nova varijabla String y = "AAA" pokazuje na istu adresu
+	- x == y ? => true
+- String x = new String("AAA") -> kreira se novi objekat String sa "AAA", na HEAP-U
+	- String y = new String("AAA") 
+	-> x == y ? false
+
+- ako se u throw { ... } bloku forsira bacanje izuzetka: { throw new except(); }, a u finally bloku ima return statement, TADA SE RETURN IZVRSAVA, A NE PROPAGIRA SE BACANJE IZUZETKA UNAZAD
+
+- kod deserijalizacije pozvace se neparametrisani konstruktor klase (ukoliko ga ima)
+
+- moguce je sabirati string sa Wrapper klasama -> implicitno se poziva toString() metoda wrapper klase
+
+- ukoliko se u nekom statickom inicijalizacionom bloku pojavljuje 
+	'new A5()' (recimo), 
+tada se proces ucitavanja klasa izvrsava tako STO SE KREIRA OBJEKAT A5(), PA TEK ONDA SE NASTAVLJA STATICKA INICIJALIZACIJA OSTLAIH KLASA (REDOM)
+
+- opet:
+	- D3 -> { D1, D2 }
+	- ako polimorfno kreiramo obj = (D3) (new D1()),
+		tada ne mozemo obj2 = (D2)obj
+		- JER JE OBJ POLIMORFNI OBLIK OBJEKTA D1, A D1 I D2 SU 
+		NA ISTOM NIVOU U KLASNOJ HIJERARHIJI, PA JE NEMOGUCE
+		KASTOVATI -> ClassCastException
+		- MOGUCE JE AKKO JE [obj == null]
+
+- klase sa privatnim konstruktorom je nemoguce instancirati vanjski, privatni konstruktori se mogu koristiti samo za delegiranje/deserijalizaciju (jvm)
+
+- class A1 {
+    static A1 a1;
+
+    static {
+        // JAKO BITNO: 
+        // U ovom slučaju se prvo izvršava new A2, jer je A u procesu kreiranja trenutno, zbog main metode
+        new A2(new A1()); 
+        System.out.println("A1-S");
+    }
+
+- moguca konverzija:
+	byte -> short -> int -> long -> float -> double
+	implicitno moze 'uzi' u 'siri' tip (nema gubitka informacija)
+	'siri' u 'uzi' tip MORA EKSPLICITNO
+- primitivni tipovi se prenose po vrijednosti (parametri, stek)
+- slicno i sa referencama -> kopira se REFERENCA, ali ona idalje pokazuje na isti objekat
+
+a>>>b – pomjera bitove u a u desno za b
+mjesta i ubacuje 0 bez obzira na znak a
+a = 32 = 100 = 0000 0000 0010 0000
+a>>>2 => 0000 0000 0000 1000 = 8
+a = -1 = 1111 1111 1111 1111
+a>>>3 => 0001 1111 1111 1111 = 1 + 2 + 4 + 8 + ... = kolko vec
+
+- ako je ugnjezdena klasa staticka, pristup iz okruzujuce je moguc samo preko OkruzujucaKlasa.UnutrasnjaKlasa.nesto...
+- vanjska klasa nema pristup clanovima unutrasnje klase
+- elementi nizova se cuvaju na heap-u, dok se reference na njih (niz[0], niz[1]...) cuvaju na steku
+- moguce je pristupati statickim poljima bazne klase putem izvedene klase
+- final metoda se ne moze redefinisati
+
+• redefinisana metoda može:
+– baciti manje izuzetaka ili izostaviti throws
+klauzulu,
+– baciti iste izuzetke ili
+– baciti izuzetke koji su podklase onih koji su
+bačeni u metodi koja je redefinisana
+
+- posto se privatna polja ne nasljedjuju, moze se definisati public/protected metoda koja implementira pristupanje ovim clanovima -> jedan od indirektnih nacina pristupa
+
+– kod deserijalizacije poziva se default-ni
+konstruktor, a nakon njega readExternal()
+
+-------------
+class Player2 implements Externalizable {
+    Player2() {
+        System.out.println("Player2 Constructor");
+    }
+
+(warning) Externalizable class 'Player2' has no 'public' no-arg constructor
+-------------
+
+Collection: .of() metoda vraca IMMUTABLE KOLEKCIJU
+
+- Lambde mogu referencirati (ne i modifikovati)
+lokalne varijable iz okružujuće metode
+• I dalje mogu referencirati i modifikovati promjenjive
+instance iz okružujuće klase

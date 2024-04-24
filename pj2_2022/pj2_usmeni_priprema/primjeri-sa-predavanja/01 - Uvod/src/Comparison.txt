@@ -1,0 +1,7 @@
+test1   //true
+test2   //false --> UTVRDJENO FALSE
+// ne ispisuje se test3 zbog short-circuitovanja if-uslova (evaluiran je vec)
+NOT OK
+=========
+test1 //true --> UTVRDJENO TRUE ( 1 | 0 | 0 ==> 1)
+OK

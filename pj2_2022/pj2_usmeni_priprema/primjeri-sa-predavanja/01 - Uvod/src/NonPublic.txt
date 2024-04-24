@@ -1,0 +1,6 @@
+Constructor NonPublic
+
+// klasa je instancirana (main metoda je pozvana)
+// ali se ne poziva konstruktor te klase
+// jer ne postoji konkretan objekat u korisnickom adresnom prostoru
+// koji ga referencira

@@ -1,0 +1,1 @@
+Catch org.unibl.etf.exceptions.MyException: Exception Message

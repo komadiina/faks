@@ -1,0 +1,6 @@
+// x / y == 10 / 0
+// desi se prije array[11] 
+// --> bude baceno prije ArrayIndexOutOfBoundsException
+// ispis:
+stackTraceUMultiCatchTest.main
+ex: ArithmeticException: / by 0

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="etf-canvas">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/02 - Paketi, kontrola pristupa/lib/etf-canvas.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
