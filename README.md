@@ -1,10 +1,9 @@
 uradjeno:
 - pj2
 - mreze
-
+- it
 
 treba:
-- it
 - prs
 - mdp
 - bp
