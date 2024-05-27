@@ -41,7 +41,7 @@ definisemo broj za odredjeni vlan (npr 10, 20)
 `show vlan brief` - svi portovi su u defaultnom vlanu 1    
 `conf terminal` -> `vlan <vlan_id>` (opcionalno `name <vlan_name>`)    
 - moraju biti konfigurisani na svakom od sviceva u topologiji    
-dodjeljujemo vlan na nivou porta:     
+dodjeljujemo vlan na nivou porta:     ****
 - `switchport mode access` (access ili trunk mod)    
 - `switchport access vlan <vlan_id>`    
 trunk -> prenos saobracaja iz svih vlanova    
@@ -185,8 +185,8 @@ multiaccess mreza - vise rutera pristupa/dijeli jednu mrezu - pojava Designated 
     
 # 6. DHCP, NAT (Static, Dynamic, Port)    
 ## 6a. DHCP    
-`ip dhcp excluded-address [addresses]`    
-`dhcp pool <pool_name>`    
+`ip dhcp excluded-address <from> <to>`    
+`ip dhcp pool <pool_name>`    
 `network <netaddr> <mask>`    
 `default-router <default_gateway>`    
 `dns-server <dns_address>`    
@@ -241,3 +241,54 @@ mozemo imati vise interfejsa rutera sa istom link-local adresom
 `ipv6 unicast-routing` - **neophodno** da ipv6 prosljedjuje pakete  
 
 da bismo radili podmrezavanje kod ipv6, to se uvijek radi kod cetvrtog heksteta
+
+
+2001:db8:acad:00c8::/64 
+
+4 podmreze => 64 + (x, 2^x = 4, x = 2) = 64 + 2 = 66
+za npr. 16 podmreza => 64 + (x, 2^x = 16, x = 4) = 64 + 4 = 68
+
+r1:
+  g0/0 2001:db8:acad:00c8::/64
+  g0/1 2001:db8:acad:00c9::/64
+  
+r2:
+  g0/0 2001:db8:acad:00ca::/64
+  g0/1 2001:db8:acad:00cb::/64
+
+r1-r2: 2001:db8:acad:00cc::/64
+
+
+
+
+
+
+
+192.168.1.0/24
+64 = 2^8, - 2 = 62 >= 50 => /26
+
+192.168.1.128 = mrezna
+255.255.255.192 = maska
+
+
+VLAN1   192.168.1.192 255.255.255.224
+VLAN15  192.168.1.0   255.255.255.128
+VLAN25  192.168.1.128 255.255.255.192
+VLAN99  192.168.1.224 255.255.255.224
+
+
+
+podesavanje ospfv6 na ruterima: int g0/0.vlan_id -> ipv6 ospf <process_id> area <area_id>  
+
+podesavanje nativnog vlana na ruteru: int fa0/0.vlan_id -> encapsulation dot1q <vlan_id> native  
+
+ppp: (ruter) emcapsulation ppp -> (config) username   <hostname_drugog_rutera> password <sifra>, isto uraditi i na drugom ruteru samo obrnuti hostname  
+
+bpduguard, portfast  
+
+etherchannel:  
+int range <range> -> channel-group <group> mode <on/active/passive> (kod mode lupiti upitnik i vidjeti sta trazi)  
+
+podesavanje router-id (drugacije se pristupa):  
+ospv3 (ipv4): router ospf <process_id> -> router-id <router_id>  
+ospv6 (ipv6): (config) ipv6 router ospf <process_id> -> router-id <router_id>  
