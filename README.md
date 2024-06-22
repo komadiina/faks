@@ -3,7 +3,8 @@ uradjeno:
 - mreze
 - it
 - prs
-- bp (treba teorija)
+- bp
+- ps
 
 treba:
 - mdp
